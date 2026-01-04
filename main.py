@@ -7,7 +7,7 @@ from langchain_tavily import TavilySearch
 
 load_dotenv()
 
-llm = ChatOllama(temperature=0, model="gpt-oss:20b")
+llm = ChatOllama(model="gpt-oss:20b")
 tools = [TavilySearch()]
 agent = create_agent(model=llm,tools=tools)
 
