@@ -10,7 +10,14 @@ load_dotenv()
 
 tools = [TavilySearch()]
 llm = ChatOllama(model="qwen2.5:7b")
+react_prompt = hub.pull("hwchase17/react")
+agent = create_react_agent(
+    llm=llm,
+    tools=tools,
+    prompt=react_prompt
+)
 
+agent_executor = AgentExecutor(agent=agent,tools=tools,verbose=True)
 
 
 def main():
