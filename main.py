@@ -1,29 +1,40 @@
+from dotenv import load_dotenv
 from langchain_classic import hub
 from langchain_classic.agents import AgentExecutor
 from langchain_classic.agents.react.agent import create_react_agent
+from langchain_core.output_parsers.pydantic import PydanticOutputParser
+from langchain_core.prompts import PromptTemplate
+from langchain_core.runnables import RunnableLambda
 from langchain_ollama import ChatOllama
-from dotenv import load_dotenv
 from langchain_tavily import TavilySearch
+
+from prompt import REACT_PROMPT_WITH_FORMAT_INSTRUCTIONS
+from schemas import AgentResponse
 
 load_dotenv()
 
 
 tools = [TavilySearch()]
 llm = ChatOllama(model="qwen2.5:7b")
-react_prompt = hub.pull("hwchase17/react")
-agent = create_react_agent(
-    llm=llm,
-    tools=tools,
-    prompt=react_prompt
-)
+# react_prompt = hub.pull("hwchase17/react")
 
-agent_executor = AgentExecutor(agent=agent,tools=tools,verbose=True)
+output_parser = PydanticOutputParser(pydantic_object=AgentResponse)
+react_prompt_with_format_instructions = PromptTemplate(
+    template=REACT_PROMPT_WITH_FORMAT_INSTRUCTIONS,
+    input_variables=["input", "agent_scratchpad", "tool_names", "tools"],
+).partial(format_instructions=output_parser.get_format_instructions())
+
+agent = create_react_agent(
+    llm=llm, tools=tools, prompt=react_prompt_with_format_instructions
+)
+agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+chain = agent_executor
 
 
 def main():
     result = agent_executor.invoke(
         input={
-            "input":"search for 3 job posting for an ai engineer using langchain in delhi on linkedin and list their details"
+            "input": "search for 3 job posting for an ai engineer using langchain in delhi on linkedin and list their details"
         }
     )
     print(result)
