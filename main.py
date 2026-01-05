@@ -9,9 +9,17 @@ load_dotenv()
 
 
 tools = [TavilySearch()]
+llm = ChatOllama(model="qwen2.5:7b")
+
+
 
 def main():
-    print("Hello from llmsearch!")
+    result = agent_executor.invoke(
+        input={
+            "input":"search for 3 job posting for an ai engineer using langchain in delhi on linkedin and list their details"
+        }
+    )
+    print(result)
 
 
 if __name__ == "__main__":
