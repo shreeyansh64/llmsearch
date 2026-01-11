@@ -1,4 +1,4 @@
 ## LLM Search
 
 Using LCEL and open-source models to get detailed and specific-format structured data for further usage.
-> PS: This variation uses the initial classic reasoning and action based langchain implementation.
+> PS: This variation uses the initial classic reasoning and action based langchain implementation and pydantic for format-spicific data.

@@ -7,12 +7,10 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnableLambda
 from langchain_ollama import ChatOllama
 from langchain_tavily import TavilySearch
-
 from prompt import REACT_PROMPT_WITH_FORMAT_INSTRUCTIONS
 from schemas import AgentResponse
 
 load_dotenv()
-
 
 tools = [TavilySearch()]
 llm = ChatOllama(model="qwen2.5:7b")
