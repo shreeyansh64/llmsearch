@@ -1,3 +1,3 @@
-## LLM - Search
+## LLM Search
 
-> More updates soon
+Using LCEL and open-source models to get detailed and specific-format structured data for further usage.
